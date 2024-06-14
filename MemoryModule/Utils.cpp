@@ -19,13 +19,7 @@ NTSTATUS NTAPI RtlResolveDllNameUnicodeString(
 	do {
 
 		if (DllName && *DllName) {
-			bool extend = false;
-
 			length = wcslen(DllName);
-			if (length <= 4 || _wcsnicmp(DllName + length - 4, L".dll", 4)) {
-				length += 4;
-				extend = true;
-			}
 
 			if (++length >= 0xffff) {
 				status = STATUS_OBJECT_NAME_INVALID;
@@ -40,7 +34,7 @@ NTSTATUS NTAPI RtlResolveDllNameUnicodeString(
 				break;
 			}
 
-			swprintf_s(BaseDllName->Buffer, length, extend ? L"%s.dll" : L"%s", DllName);
+			swprintf_s(BaseDllName->Buffer, length, L"%s", DllName);
 		}
 		else {
 			DllName = nullptr;
